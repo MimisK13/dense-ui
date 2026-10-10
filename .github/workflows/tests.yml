@@ -23,11 +23,13 @@ jobs:
           php-version: '8.4'
           tools: composer:v2
           coverage: none
+          extensions: mbstring, sqlite3, pdo_sqlite
+
+      - name: Validate composer.json
+        run: composer validate --no-check-publish
 
       - name: Install dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
 
-      - name: Run Pest
-        run: |
-          mkdir -p .pest-cache
-          vendor/bin/pest --cache-directory=.pest-cache --parallel
+      - name: Run tests
+        run: composer test

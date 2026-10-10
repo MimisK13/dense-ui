@@ -26,6 +26,9 @@
             "Ui\\Dense\\Tests\\": "tests/"
         }
     },
+    "scripts": {
+        "test": "pest --parallel"
+    },
     "extra": {
         "laravel": {
             "providers": [
