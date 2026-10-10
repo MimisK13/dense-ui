@@ -487,9 +487,13 @@
 .icon { display: inline-flex; width: 14px; height: 14px; flex-shrink: 0; align-items: center; justify-content: center; }
 .icon svg { width: 100%; height: 100%; }
 
-.page-header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; }
-.page-title { color: var(--dense-text); font-family: var(--dense-font-display); font-size: 24px; font-weight: 700; }
-.page-meta { color: var(--dense-text-muted); font-size: 12px; }
+.page-header { display: flex; align-items: flex-end; justify-content: space-between; flex-shrink: 0; padding: 18px 24px 14px; }
+.breadcrumb { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; color: var(--dense-text-muted); font-size: 11px; }
+.breadcrumb a { color: var(--dense-text-muted); text-decoration: none; }
+.breadcrumb a:hover { color: var(--dense-text-secondary); }
+.page-title { display: flex; align-items: center; gap: 10px; color: var(--dense-text); font-family: var(--dense-font-display); font-size: 20px; font-weight: 700; letter-spacing: -0.03em; }
+.page-meta { display: flex; align-items: center; gap: 14px; margin-top: 3px; color: var(--dense-text-muted); font-size: 11px; }
+.page-meta span { display: flex; align-items: center; gap: 4px; }
 .page-actions { display: flex; align-items: center; gap: 8px; }
 .toolbar { display: flex; align-items: center; gap: 12px; }
 .toolbar-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
