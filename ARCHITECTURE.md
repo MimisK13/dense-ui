@@ -19,13 +19,14 @@ against the Alpine instance supplied by the host application.
 Static primitives are `badge`, `button`, `button-group`, `empty-state`,
 `field`, `field-label`, `fieldset`, `icon`, `icon-button`, `input`, `label`,
 `page-header`, `radio`, `select`, `status`, `table`, `table-card`, `textarea`,
-and `toolbar`. `card` and `table-card` additionally expose local disclosure
-state when configured as collapsible.
+and `toolbar`. `avatar` is a static identity primitive. `card` and
+`table-card` additionally expose local disclosure state when configured as
+collapsible.
 
-`combobox` uses the reusable `denseCombobox` behavior. `dialog`, `dropdown`,
-and `tabs` are reusable behaviors ready for Blade wrappers. The behavior
-owns only UI state and keyboard/focus interaction; application code owns
-queries, authorization, and domain validation.
+`combobox` uses the reusable `denseCombobox` behavior. `confirm-modal`,
+`dialog`, `dropdown`, and `tabs` are reusable behaviors ready for Blade
+wrappers. The behavior owns only UI state and keyboard/focus interaction;
+application code owns queries, authorization, and domain validation.
 
 The date picker, calendar, store picker, and dropzone still contain local
 Alpine objects. They are observed candidates for independent migration, not

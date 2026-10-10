@@ -55,10 +55,10 @@ or preserve `wire:*` attributes, but the server remains authoritative.
 
 Existing component families include static primitives such as `button`,
 `input`, `field`, `label`, `select`, `table`, `table-card`, `card`, `badge`,
-`status`, and `empty-state`, plus interactive components such as
+`status`, `empty-state`, and `avatar`, plus interactive components such as
 `combobox`, `dialog`, `dropdown`, `tabs`, `side-panel`, `date-picker`,
-`calendar`, `store-picker`, and `dropzone`. Confirm the current implementation
-before assuming a component is fully centralized.
+`calendar`, `store-picker`, `dropzone`, and `confirm-modal`. Confirm the
+current implementation before assuming a component is fully centralized.
 
 ## Alpine architecture
 

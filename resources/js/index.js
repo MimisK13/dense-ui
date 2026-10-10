@@ -1,5 +1,6 @@
 import '../css/dense.css';
 import { denseCombobox } from './components/combobox';
+import { denseConfirmModal } from './components/confirm-modal';
 import { denseDialog } from './components/dialog';
 import { denseDropdown } from './components/dropdown';
 import { denseTabs } from './components/tabs';
@@ -12,6 +13,7 @@ export function registerDense(Alpine) {
     // Dense registers against the host Alpine runtime. It must never start a
     // second Alpine instance because Livewire owns Alpine initialization.
     Alpine.data('denseCombobox', denseCombobox);
+    Alpine.data('denseConfirmModal', denseConfirmModal);
     Alpine.data('denseDialog', denseDialog);
     Alpine.data('denseDropdown', denseDropdown);
     Alpine.data('denseTabs', denseTabs);

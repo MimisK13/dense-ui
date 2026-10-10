@@ -47,6 +47,8 @@ Application
         |
         v
   registerDense(Alpine)
+        |- Avatar
+        |- Confirm modal
         |- Dropdown
         |- Combobox
         |- Dialog
@@ -63,6 +65,9 @@ Asset, Container, StockLevel, Store, or other application domain rules.
 
 ## Interactive components
 
+- `avatar`: image, initials, size, color, and status indicator;
+- `confirm-modal`: accessible confirmation surface driven by a generic
+  browser event, with no domain-specific confirmation logic;
 - `combobox`: selection, filtering, keyboard navigation, disabled options,
   and optional Livewire model synchronization;
 - `dropdown`: open/close, Escape, outside close, menu focus, and focus return;
