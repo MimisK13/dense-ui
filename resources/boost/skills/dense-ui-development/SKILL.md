@@ -1,11 +1,11 @@
 ---
 name: dense-ui-development
-description: Use when developing, reviewing, or extending the `signals/ui-dense` Laravel package, including Dense Blade components, package CSS, Alpine behaviors, accessibility, Livewire compatibility, asset delivery, or package tests.
+description: Use when developing, reviewing, or extending the `dense/ui` Laravel package, including Dense Blade components, package CSS, Alpine behaviors, accessibility, Livewire compatibility, asset delivery, or package tests.
 ---
 
 # Dense UI package development
 
-Use this skill for work inside `signals/ui-dense`. The package is a
+Use this skill for work inside `dense/ui`. The package is a
 Laravel-first, domain-neutral UI system. Its public API is Blade; Alpine is
 an internal enhancement layer for local interaction.
 

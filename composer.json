@@ -1,6 +1,6 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "signals/ui-dense",
+    "name": "dense/ui",
     "description": "Domain-neutral dense UI primitives for data-dense applications.",
     "type": "library",
     "license": "AGPL-3.0-only",

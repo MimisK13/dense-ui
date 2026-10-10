@@ -1,12 +1,12 @@
 # Dense UI
 
-`signals/ui-dense` is a Laravel-first, domain-neutral component package for
+`dense/ui` is a Laravel-first, domain-neutral component package for
 dense operational interfaces.
 
 ## Installation
 
 ```bash
-composer require signals/ui-dense
+composer require dense/ui
 ```
 
 The package serves compiled assets through Laravel. The generated URLs include
