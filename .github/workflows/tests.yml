@@ -30,4 +30,4 @@ jobs:
       - name: Run Pest
         run: |
           mkdir -p .pest-cache
-          vendor/bin/pest --no-configuration --cache-directory=.pest-cache --parallel
+          vendor/bin/pest --cache-directory=.pest-cache --parallel
