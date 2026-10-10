@@ -1,0 +1,8 @@
+{
+    "name": "@dense/ui-assets",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build"
+    }
+}
