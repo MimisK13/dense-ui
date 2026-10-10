@@ -28,6 +28,4 @@ jobs:
         run: composer install --no-interaction --no-progress --prefer-dist
 
       - name: Run Pest
-        run: |
-          mkdir -p .pest-cache
-          vendor/bin/pest --cache-directory .pest-cache
+        run: vendor/bin/pest --no-configuration --do-not-cache-result
