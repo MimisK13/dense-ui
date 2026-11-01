@@ -70,9 +70,33 @@ Asset, Container, StockLevel, Store, or other application domain rules.
   browser event, with no domain-specific confirmation logic;
 - `combobox`: selection, filtering, keyboard navigation, disabled options,
   and optional Livewire model synchronization;
+- `tabs`: Blade-first tablist and tab structure with `underline` and `plain`
+  variants, plus optional local Alpine keyboard state;
 - `dropdown`: open/close, Escape, outside close, menu focus, and focus return;
 - `dialog`: open/close, Escape, initial focus, focus trap, and focus return;
 - `tabs`: active tab state and arrow/Home/End keyboard navigation.
+
+Action menus can use the generic Dropdown structure while keeping application
+actions and `wire:*` attributes in the consumer:
+
+```blade
+<x-dense::dropdown menu floating min-width="150px">
+    <x-slot:trigger>
+        <button x-ref="trigger" x-on:click="toggle()"
+            x-bind:aria-expanded="open"
+            x-bind:aria-controls="$id('dense-dropdown')">
+            Actions
+        </button>
+    </x-slot:trigger>
+
+    <x-dense::dropdown.item menu wire:click="archive">
+        Archive
+    </x-dense::dropdown.item>
+</x-dense::dropdown>
+```
+
+Use `floating` when the menu must escape an overflow container such as a
+table; ordinary dropdown content can remain positioned in normal flow.
 
 ## Livewire and development
 

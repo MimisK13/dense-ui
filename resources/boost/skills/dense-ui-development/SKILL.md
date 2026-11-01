@@ -37,6 +37,97 @@ Alpine must never decide business eligibility, query a database, authorize a
 user, or perform a stock/container operation. A Dense component may dispatch
 or preserve `wire:*` attributes, but the server remains authoritative.
 
+## Blade / Alpine component boundary
+
+Dense is Blade-first. Reusable component markup belongs in Blade components,
+not in browser-side JavaScript. Blade owns semantic HTML, slots, attribute
+forwarding, component composition, labels, control relationships, and the
+static ARIA structure required by the component.
+
+Prefer a public API such as:
+
+```blade
+<x-dense::dropdown>
+    ...
+</x-dense::dropdown>
+```
+
+Application developers should primarily consume Blade components. Internal
+`x-data` wiring is an implementation detail of the Blade component, not the
+package's primary consumer API.
+
+Reusable local interaction belongs in `Alpine.data()` modules registered by
+the existing `registerDense(Alpine)` entry point. Alpine may own open/closed
+state, highlighted options, keyboard navigation, focus movement, temporary
+selection, overlay behavior, and other local ephemeral state. It must not own
+the reusable HTML structure itself.
+
+Dense does not use Alpine as a client-side component templating engine. Do not
+use `innerHTML`, HTML-string injection, `cloneNode`, template cloning, or
+manual client-side Blade-equivalent DOM construction for reusable Dense
+components. Do not use `Alpine.initTree(...)` as normal component construction
+or rehydration. It may be considered only for exceptional infrastructure
+work with a documented reason, never as the default component pattern.
+
+Blade already renders the component structure and Livewire owns server-rendered
+DOM updates. Keeping those responsibilities separate protects morphing,
+focus and state preservation, accessibility ownership, and security review.
+Declarative Alpine state bindings may enhance markup rendered by Blade, but
+they are not a replacement for the Blade component contract.
+
+## Progressive enhancement and state ownership
+
+Dense components should render meaningful semantic HTML before JavaScript
+behavior is applied. JavaScript enhances interaction; it does not create the
+fundamental component structure. This does not require every interactive
+component to be fully functional without JavaScript, but it does require the
+server-rendered structure, labels, controls, and relationships to be present
+in Blade.
+
+Livewire owns server/application state: database-backed values, queries,
+search results, pagination, filtering, validation, permissions, and server
+workflow state. Alpine owns only local ephemeral interaction. For example,
+Alpine may manage a combobox's open state, active option, keyboard handling,
+focus, and selection mechanics; Livewire owns the query, result dataset,
+selected domain value, authorization, and server validation.
+
+Business rules remain outside Alpine. Stock availability, lifecycle
+transitions, eligibility, locking, permissions, financial calculations,
+event-sourcing rules, and domain mutations belong to canonical application
+Actions and server-side rules:
+
+```text
+Blade / Livewire / Volt
+        -> canonical Action
+        -> domain behavior
+```
+
+## Choosing Alpine.data versus inline x-data
+
+Use a reusable `Alpine.data()` behavior when interaction has keyboard or
+focus requirements, multiple state transitions, accessibility state,
+lifecycle cleanup, or repeated use across components. Examples include
+comboboxes, dialogs, dropdowns, tabs, popovers, and scanner-oriented UI.
+
+Keep trivial one-off state inline when it is genuinely local and unlikely to
+be reused, for example `x-data="{ open: false }"` for a single disclosure.
+Do not create a module for every boolean toggle. The rule is:
+
+```text
+reusable interaction -> Alpine.data module
+trivial one-off interaction -> inline Alpine is acceptable
+```
+
+## Livewire lifecycle contract
+
+Every behavior must remain compatible with Livewire DOM morphing,
+`wire:navigate`, and repeated mount/unmount. Prefer server-rendered Blade
+markup, local Alpine state, idempotent registration, and explicit cleanup for
+any necessary global listener. Do not rely on arbitrary timeouts, full-node
+recreation, DOM cloning, or lifecycle workarounds that replace Livewire's DOM
+ownership. Preserve IDs, ARIA relationships, focus behavior, and forwarded
+`wire:*` attributes after morphing and navigation.
+
 ## Component conventions
 
 - Add Blade components under `resources/views/components/<name>/index.blade.php`.
@@ -71,10 +162,28 @@ Register it through the single `registerDense(Alpine)` entry point in
 `resources/js/index.js`; do not require consumers to change their bootstrap
 when a new Dense behavior is added.
 
+The preferred shape is a small behavior factory whose state and methods are
+local to the component:
+
+```js
+export function denseDropdown(config = {}) {
+    return {
+        open: false,
+
+        init() {},
+        toggle() {},
+        close() {},
+    };
+}
+```
+
+The Blade component supplies the structure and wires this behavior internally;
+the application does not need to know the factory name for ordinary use.
+
 Use semantic state such as `aria-expanded`, `aria-selected`, `data-state`,
 and `hidden`. Let CSS style state rather than making JavaScript know visual
-tokens. Do not clone DOM with Alpine templates or rebuild Blade markup in the
-browser.
+tokens. Keep reusable markup in Blade and reusable behavior in
+`Alpine.data()`; do not turn Alpine into a template engine.
 
 Interactive behavior must cover the applicable keyboard and focus contract:
 
@@ -148,15 +257,29 @@ application-domain changes.
 ## Adding a new interactive component
 
 1. Confirm the behavior is generic and reusable across Laravel applications.
-2. Add the server-rendered Blade component under the package component path.
-3. Add a focused Alpine behavior only for local interaction state.
-4. Register it through `registerDense(Alpine)`.
+2. Design and add the server-rendered Blade component under the package
+   component path, including semantic structure, slots, attributes, labels,
+   and static ARIA relationships.
+3. Add a focused `Alpine.data()` behavior only for reusable local
+   interaction state; keep the DOM structure in Blade.
+4. Register it through `registerDense(Alpine)` without introducing a new
+   consumer bootstrap path.
 5. Add keyboard, focus, ARIA, Livewire attribute, and morphing coverage.
-6. Add concise package documentation and update `ARCHITECTURE.md` when the
+6. Add happy-path and meaningful unhappy-path tests.
+7. Add concise package documentation and update `ARCHITECTURE.md` when the
    public architecture changes.
-7. Rebuild `dist/dense.js`/`dist/dense.css` when source assets changed.
-8. Run Pest, the production build, and `git diff --check` before handoff.
+8. Verify `wire:navigate` and repeated mount/unmount behavior where relevant.
+9. Rebuild `dist/dense.js`/`dist/dense.css` when source assets changed.
+10. Run Pest, the production build, and `git diff --check` before handoff.
 
 Completion means the Blade API, responsibility boundary, accessibility
 contract, Livewire behavior, built assets, and focused tests all agree with
 the implementation.
+
+## Evaluating external patterns
+
+External examples, blog posts, framework snippets, and third-party Alpine
+patterns are reference material only. Before adopting one, compare it with
+the Blade-first API, Livewire DOM ownership, Alpine lifecycle, accessibility,
+and package maintenance cost. Do not copy an Alpine-only template pattern
+when Blade already provides the reusable structure.
